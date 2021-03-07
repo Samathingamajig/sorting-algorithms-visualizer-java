@@ -25,7 +25,8 @@ void reset() {
   array = randomlyFillList();
 
   //sorter = new BubbleSort<Integer>(array);
-  sorter = new SelectionSort<Integer>(array);
+  //sorter = new SelectionSort<Integer>(array);
+  sorter = new InsertionSort<Integer>(array);
   animation = null;
   noStroke();
 }
