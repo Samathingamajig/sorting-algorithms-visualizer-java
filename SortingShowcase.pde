@@ -24,7 +24,8 @@ void setup() {
 void reset() {
   array = randomlyFillList();
 
-  sorter = new BubbleSort<Integer>(array);
+  //sorter = new BubbleSort<Integer>(array);
+  sorter = new SelectionSort<Integer>(array);
   animation = null;
   noStroke();
 }
