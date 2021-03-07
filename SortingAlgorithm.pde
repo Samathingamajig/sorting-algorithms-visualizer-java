@@ -1,6 +1,6 @@
 import java.util.List;
 
-interface Algorithm<T> {
+interface SortingAlgorithm<T> {
   public Animation next();
   public boolean hasNext();
   public List<T> getArray();

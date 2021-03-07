@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.Iterator;
 
 List<Integer> array;
-Algorithm sorter;
+SortingAlgorithm sorter;
 Animation animation;
 
 final int size = 30;

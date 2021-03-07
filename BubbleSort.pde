@@ -1,7 +1,7 @@
 import java.util.List;
 import io.herrmann.generator.Generator;
 
-class BubbleSort<T extends Comparable<? super T>> implements Algorithm {
+class BubbleSort<T extends Comparable<? super T>> implements SortingAlgorithm {
   private List<T> array;
   private int swaps;
   private int comparisons;
