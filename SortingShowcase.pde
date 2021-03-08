@@ -11,7 +11,7 @@ final int minNum = 20;
 final int maxNum = 400;
 
 final int animationsPerFrame = 1;
-final boolean showAnimations = true;
+boolean showAnimations = true;
 
 String[] algorithms = {
   "Bubble", 
@@ -86,6 +86,7 @@ void draw() {
     "Comparisons: " + (hasUnpausedSinceLastChange ? sorter.getComparisons() : 0), 
     "Swaps: " + (hasUnpausedSinceLastChange ? sorter.getSwaps() : 0), 
     "Paused: " + (paused ? "True" : "False"), 
+    "Show Animations: " + (showAnimations ? "True" : "False"), 
     "FPS: " + frameRate, 
   };
   for (int i = 0; i < gui.length; i++)
@@ -139,5 +140,8 @@ void keyPressed() {
     paused = true;
     hasUnpausedSinceLastChange = false;
     reset();
+  } else if (key == 'c') {
+    showAnimations = !showAnimations;
+    animation = null;
   }
 }
