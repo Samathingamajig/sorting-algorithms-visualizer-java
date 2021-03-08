@@ -3,6 +3,9 @@ import java.util.Iterator;
 
 import java.util.Arrays;
 
+import java.util.Set;
+import java.util.HashSet;
+
 List<Integer> array;
 List<Integer> lastArray;
 SortingAlgorithm sorter;
@@ -27,6 +30,8 @@ boolean paused = true;
 boolean everStarted = false;
 boolean hasUnpausedSinceLastChange = true;
 
+Set<Integer> currentlyPressedKeys;
+
 void setup() {
   size(600, 500);
   //fullScreen();
@@ -37,6 +42,8 @@ void setup() {
   reset();
   initSorter();
   noStroke();
+
+  currentlyPressedKeys = new HashSet<Integer>();
 }
 
 void reset() {
@@ -131,28 +138,39 @@ List<Integer> randomlyFillList() {
 final int F3 = 114;
 
 void keyPressed() {
-  if (key == 'r') {
-    array = lastArray;
-    hasUnpausedSinceLastChange = false;
-    reset();
-  } else if (key == 'p') {
-    everStarted = true;
-    if (!hasUnpausedSinceLastChange) initSorter();
-    paused = !paused;
-    hasUnpausedSinceLastChange = true;
-  } else if (key == 't') {
-    currentAlgorithm = ++currentAlgorithm % algorithms.length; 
-    if (everStarted && hasUnpausedSinceLastChange) reset();
-    hasUnpausedSinceLastChange = false;
-  } else if (key == 'n') {
-    lastArray = randomlyFillList();
-    paused = true;
-    hasUnpausedSinceLastChange = false;
-    reset();
-  } else if (key == 'c') {
-    showAnimations = !showAnimations;
-    animation = null;
-  } else if (keyCode == F3) {
-    showDebugMenu = !showDebugMenu;
+  if (!currentlyPressedKeys.contains(keyCode)) {
+    // Keys which can't be held down
+    if (key == 'r') {
+      array = lastArray;
+      hasUnpausedSinceLastChange = false;
+      reset();
+    } else if (key == 'p') {
+      everStarted = true;
+      if (!hasUnpausedSinceLastChange) initSorter();
+      paused = !paused;
+      hasUnpausedSinceLastChange = true;
+    } else if (key == 't') {
+      currentAlgorithm = ++currentAlgorithm % algorithms.length; 
+      if (everStarted && hasUnpausedSinceLastChange) reset();
+      hasUnpausedSinceLastChange = false;
+    } else if (key == 'c') {
+      showAnimations = !showAnimations;
+      animation = null;
+    } else if (keyCode == F3) {
+      showDebugMenu = !showDebugMenu;
+    }
+  } else {
+    // Keys which can be held down
+    if (key == 'n') {
+      lastArray = randomlyFillList();
+      paused = true;
+      hasUnpausedSinceLastChange = false;
+      reset();
+    }
   }
+  currentlyPressedKeys.add(keyCode);
+}
+
+void keyReleased() {
+  currentlyPressedKeys.remove(new Integer(keyCode));
 }
