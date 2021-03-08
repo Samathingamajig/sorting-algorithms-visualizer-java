@@ -127,16 +127,22 @@ void draw() {
 
   for (int i = 0; i < size; i++) {
     fill(255);
-    if (animation != null && (i == animation.getIndex1() || i == animation.getIndex2())) {
-      switch (animation.getType()) {
-      case "Compare":
-        fill(#0000FF);
-        break;
-      case "Swap":
-        fill(#00FF00);
-        break;
-      default:
-        println("Unknown animation type: " + animation.getType());
+    if (animation != null) {
+      if (i == animation.getIndex1() || i == animation.getIndex2()) {
+        switch (animation.getType()) {
+        case "Compare":
+          fill(#0000FF);
+          break;
+        case "Swap":
+          fill(#00FF00);
+          break;
+        default:
+          println("Unknown animation type: " + animation.getType());
+        }
+      }
+      if (i == animation.getHeldIndex()) {
+        // This could override color, but that's intended
+        fill(#FFA500);
       }
     }
     rect(startingX + boxWidth*i, height - array.get(i).intValue(), boxWidth, array.get(i).intValue());

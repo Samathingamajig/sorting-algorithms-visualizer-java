@@ -36,7 +36,7 @@ class SelectionSort<T extends Comparable<? super T>> implements SortingAlgorithm
           int jMin = i;
           for (int j = i+1; j < array.size(); j++) {
             comparisons++;
-            yield(new Animation(j, jMin, "Compare"));
+            yield(new Animation(j, jMin, "Compare", i));
             if (array.get(j).compareTo(array.get(jMin)) < 0) {
               jMin = j;
             }

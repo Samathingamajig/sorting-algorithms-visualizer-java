@@ -47,12 +47,12 @@ class InsertionSort<T extends Comparable<? super T>> implements SortingAlgorithm
           T temp = array.get(i);
           for (int j = i-1; j >= 0; j--) {
             comparisons++;
-            yield(new Animation(j, j+1, "Compare"));
+            yield(new Animation(j, j+1, "Compare", i));
             if (array.get(j).compareTo(temp) <= 0) break;
             array.set(j+1, array.get(j));
             array.set(j, temp);
             swaps++;
-            yield(new Animation(j, j+1, "Swap"));
+            yield(new Animation(j, j+1, "Swap", i));
           }
         }
       }
