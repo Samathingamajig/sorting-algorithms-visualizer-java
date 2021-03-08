@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.Iterator;
 
+import java.util.Arrays;
+
 List<Integer> array;
 List<Integer> lastArray;
 SortingAlgorithm sorter;
@@ -12,6 +14,8 @@ final int maxNum = 400;
 
 final int animationsPerFrame = 1;
 boolean showAnimations = true;
+
+boolean showDebugMenu = false;
 
 String[] algorithms = {
   "Bubble", 
@@ -81,16 +85,18 @@ void draw() {
   int tMargin = 2;
   textSize(tSize);
   textAlign(LEFT, TOP);
-  String[] gui = {
+  List<String> gui = new ArrayList<String>(Arrays.asList(
     "Algorithm: " + algorithms[currentAlgorithm] + " Sort", 
     "Comparisons: " + (hasUnpausedSinceLastChange ? sorter.getComparisons() : 0), 
     "Swaps: " + (hasUnpausedSinceLastChange ? sorter.getSwaps() : 0), 
-    "Paused: " + (paused ? "True" : "False"), 
-    "Show Animations: " + (showAnimations ? "True" : "False"), 
-    "FPS: " + frameRate, 
-  };
-  for (int i = 0; i < gui.length; i++)
-    text(gui[i], 0, (tSize + tMargin) * i);
+    "Paused: " + (paused ? "True" : "False")
+    ));
+  if (showDebugMenu) {
+    gui.add("Show Animations: " + (showAnimations ? "True" : "False"));
+  }
+  gui.add("FPS: " + frameRate);
+  for (int i = 0; i < gui.size(); i++)
+    text(gui.get(i), 0, (tSize + tMargin) * i);
 
   float boxWidth = (width * 0.7 / size);
   float startingX = (width * 0.15);
@@ -121,6 +127,9 @@ List<Integer> randomlyFillList() {
   return arr;
 }
 
+// Function key keycodes
+final int F3 = 114;
+
 void keyPressed() {
   if (key == 'r') {
     array = lastArray;
@@ -143,5 +152,7 @@ void keyPressed() {
   } else if (key == 'c') {
     showAnimations = !showAnimations;
     animation = null;
+  } else if (keyCode == F3) {
+    showDebugMenu = !showDebugMenu;
   }
 }
