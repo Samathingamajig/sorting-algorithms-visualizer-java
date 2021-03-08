@@ -2,6 +2,7 @@ import java.util.List;
 import java.util.Iterator;
 
 List<Integer> array;
+List<Integer> lastArray;
 SortingAlgorithm sorter;
 Animation animation;
 
@@ -20,7 +21,7 @@ String[] algorithms = {
 int currentAlgorithm = 0;
 boolean paused = true;
 boolean everStarted = false;
-boolean playSinceLastToggle = true;
+boolean hasUnpausedSinceLastChange = true;
 
 void setup() {
   size(600, 500);
@@ -28,16 +29,17 @@ void setup() {
   background(51); 
   frameRate(30);
   //frameRate(60);
+  lastArray = randomlyFillList();
   reset();
   initSorter();
+  noStroke();
 }
 
 void reset() {
-  array = randomlyFillList();
+  array = lastArray;
   paused = true;
 
   animation = null;
-  noStroke();
 }
 
 void initSorter() {
@@ -81,8 +83,8 @@ void draw() {
   textAlign(LEFT, TOP);
   String[] gui = {
     "Algorithm: " + algorithms[currentAlgorithm] + " Sort", 
-    "Comparisons: " + sorter.getComparisons(), 
-    "Swaps: " + sorter.getSwaps(), 
+    "Comparisons: " + (hasUnpausedSinceLastChange ? sorter.getComparisons() : 0), 
+    "Swaps: " + (hasUnpausedSinceLastChange ? sorter.getSwaps() : 0), 
     "Paused: " + (paused ? "True" : "False"), 
     "FPS: " + frameRate, 
   };
@@ -120,15 +122,22 @@ List<Integer> randomlyFillList() {
 
 void keyPressed() {
   if (key == 'r') {
+    array = lastArray;
+    hasUnpausedSinceLastChange = false;
     reset();
   } else if (key == 'p') {
     everStarted = true;
-    if (!playSinceLastToggle) initSorter();
+    if (!hasUnpausedSinceLastChange) initSorter();
     paused = !paused;
-    playSinceLastToggle = true;
+    hasUnpausedSinceLastChange = true;
   } else if (key == 't') {
     currentAlgorithm = ++currentAlgorithm % algorithms.length; 
-    if (everStarted && playSinceLastToggle) reset();
-    playSinceLastToggle = false;
+    if (everStarted && hasUnpausedSinceLastChange) reset();
+    hasUnpausedSinceLastChange = false;
+  } else if (key == 'n') {
+    lastArray = randomlyFillList();
+    paused = true;
+    hasUnpausedSinceLastChange = false;
+    reset();
   }
 }
