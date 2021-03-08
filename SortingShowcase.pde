@@ -19,6 +19,7 @@ final int animationsPerFrame = 1;
 boolean showAnimations = true;
 
 boolean showDebugMenu = false;
+boolean showHelpMenu = false;
 
 String[] algorithms = {
   "Bubble", 
@@ -29,6 +30,15 @@ int currentAlgorithm = 0;
 boolean paused = true;
 boolean everStarted = false;
 boolean hasUnpausedSinceLastChange = true;
+
+String[] helpMenu = {
+  "h: " + "show this help menu", 
+  "p: " + "toggle pause/play", 
+  "t: " + "toggle sorting algorithm", 
+  "c: " + "toggle showing colors", 
+  "r: " + "reset array to before being sorted", 
+  "n: " + "use a new random array", 
+};
 
 Set<Integer> currentlyPressedKeys;
 
@@ -103,7 +113,14 @@ void draw() {
   }
   gui.add("FPS: " + frameRate);
   for (int i = 0; i < gui.size(); i++)
-    text(gui.get(i), 0, (tSize + tMargin) * i);
+    text(gui.get(i), tMargin, tMargin + (tSize + tMargin) * i);
+
+  if (showHelpMenu) {
+    textAlign(RIGHT, TOP);
+    for (int i = 0; i < helpMenu.length; i++) {
+      text(helpMenu[i], width - tMargin, tMargin + (tSize + tMargin) * i);
+    }
+  }
 
   float boxWidth = (width * 0.7 / size);
   float startingX = (width * 0.15);
@@ -134,43 +151,65 @@ List<Integer> randomlyFillList() {
   return arr;
 }
 
-// Function key keycodes
-final int F3 = 114;
+// Keycodes
+final int KEY_H = 72;
+final int KEY_T = 84;
+final int KEY_P = 80;
+final int KEY_C = 67;
+final int KEY_R = 82;
+final int KEY_N = 78;
+final int KEY_F3 = 114;
 
 void keyPressed() {
   if (!currentlyPressedKeys.contains(keyCode)) {
     // Keys which can't be held down
-    if (key == 'r') {
+    switch (keyCode) {
+    case KEY_R:
       array = lastArray;
       hasUnpausedSinceLastChange = false;
       reset();
-    } else if (key == 'p') {
+      break;
+    case KEY_P:
       everStarted = true;
       if (!hasUnpausedSinceLastChange) initSorter();
       paused = !paused;
       hasUnpausedSinceLastChange = true;
-    } else if (key == 't') {
+      break;
+    case KEY_T:
       currentAlgorithm = ++currentAlgorithm % algorithms.length; 
       if (everStarted && hasUnpausedSinceLastChange) reset();
       hasUnpausedSinceLastChange = false;
-    } else if (key == 'c') {
+      break;
+    case KEY_C:
       showAnimations = !showAnimations;
       animation = null;
-    } else if (keyCode == F3) {
+      break;
+    case KEY_F3:
       showDebugMenu = !showDebugMenu;
+      break;
+    case KEY_H:
+      showHelpMenu = true;
+      break;
     }
-  } else {
-    // Keys which can be held down
-    if (key == 'n') {
-      lastArray = randomlyFillList();
-      paused = true;
-      hasUnpausedSinceLastChange = false;
-      reset();
-    }
+  }
+  // Keys which can be held down
+  // (if this was inside an `else`, there would be a delay for the first press)
+  switch (keyCode) {
+  case KEY_N:
+    lastArray = randomlyFillList();
+    paused = true;
+    hasUnpausedSinceLastChange = false;
+    reset();
+    break;
   }
   currentlyPressedKeys.add(keyCode);
 }
 
 void keyReleased() {
+  switch (keyCode) {
+  case KEY_H:
+    showHelpMenu = false;
+    break;
+  }
   currentlyPressedKeys.remove(new Integer(keyCode));
 }
