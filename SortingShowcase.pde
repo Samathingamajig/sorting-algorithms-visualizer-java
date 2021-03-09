@@ -25,6 +25,7 @@ String[] algorithms = {
   "Bubble", 
   "Selection", 
   "Insertion", 
+  "Merge", 
 };
 int currentAlgorithm = 0;
 boolean paused = true;
@@ -73,6 +74,9 @@ void initSorter() {
     break;
   case "Insertion": 
     sorter = new InsertionSort<Integer>(array); 
+    break;
+  case "Merge":
+    sorter = new MergeSort<Integer>(array);
     break;
   default: 
     println("Invalid sorting type: " + algorithms[currentAlgorithm] + "; currentAlgorithm == " + currentAlgorithm);
